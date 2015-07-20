@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="196dp"
+    android:background="@color/drawer_header_bg"
+    android:orientation="vertical">
+
+  <TextView android:id="@+id/drawer_header_textview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:text="@string/app_name"
+    android:textAppearance="?android:attr/textAppearanceLargeInverse"
+    fontPath="@string/font_caecilia"
+    tools:ignore="MissingPrefix"/>
+
+</FrameLayout>

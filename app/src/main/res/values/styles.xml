@@ -1,0 +1,16 @@
+<resources>
+
+  <style name="AppTheme" parent="BaseTheme"/>
+
+  <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primaryDark</item>
+    <item name="colorAccent">@color/accent</item>
+  </style>
+
+  <style name="TextCaecilia" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <item name="fontPath">@string/font_caecilia</item>
+  </style>
+
+
+</resources>

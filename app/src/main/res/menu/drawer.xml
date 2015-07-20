@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" >
+  <!-- group with single selected item so only one item is highlighted in the nav menu -->
+  <group android:checkableBehavior="single">
+    <item
+      android:id="@+id/drawer_item_1"
+      android:icon="@drawable/ic_cake_white_36dp"
+      android:title="@string/item_1"
+        fontPath="@string/font_frutiger"
+      tools:ignore="MissingPrefix" />
+    <item
+      android:id="@+id/drawer_item_2"
+      android:icon="@drawable/ic_queue_music_white_36dp"
+      android:title="@string/item_2"
+        fontPath="@string/font_frutiger"
+      tools:ignore="MissingPrefix"/>
+    <item
+      android:id="@+id/drawer_item_3"
+      android:icon="@drawable/ic_tag_faces_white_36dp"
+      android:title="@string/item_3"
+        fontPath="@string/font_frutiger"
+      tools:ignore="MissingPrefix"/>
+  </group>
+</menu>

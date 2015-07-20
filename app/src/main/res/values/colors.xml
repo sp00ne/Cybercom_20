@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="secondary">#ff752c5e</color>
+    <color name="secondaryDark">#ff611c4b</color>
+    <color name="primary">@color/PurpleCybercom</color>
+    <color name="primaryDark">@color/PurpleCybercom</color>
+    <color name="ternary">#ff3b3b3a</color>
+    <color name="accent">#ffe3b008</color>
+
+    <color name="primaryText">#de000000</color>
+    <color name="secondaryText">#8a000000</color>
+
+    <color name="drawer_header_bg">@color/secondary</color>
+    <color name="drawer_item_text_default">#bebebe</color>
+    <color name="drawer_item_text_checked">@color/primary</color>
+
+    <color name="window_background">#FFF5F5F5</color>
+
+    <!-- Cybercom official colors -->
+    <color name="BlueCybercom">#015599</color>
+    <color name="Blue80Cybercom">#3377AD</color>
+    <color name="GreenCybercom">#aab300</color>
+    <color name="Green80Cybercom">#BBC233</color>
+    <color name="OrangeCybercom">#ed7b01</color>
+    <color name="Orange80Cybercom">#F09533</color>
+    <color name="PurpleCybercom">#713188</color>
+    <color name="Purple80Cybercom">#8D5A9F</color>
+
+</resources>
