@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import jp.wasabeef.recyclerview.animators.adapters.SlideInBottomAnimationAdapter;
 
-public class SongbookFragment extends Fragment {
+public class SongbookCardFragment extends Fragment {
 
     /**
      * Card elevation in pixels
