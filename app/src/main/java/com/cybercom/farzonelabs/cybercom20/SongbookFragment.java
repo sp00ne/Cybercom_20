@@ -72,7 +72,7 @@ public class SongbookFragment extends Fragment {
         mSongsInfo = db.getSongsInfo();
 
         mAdapter = new SongbookAdapter(mSongsInfo,mRecyclerView.getContext());
-        mRecyclerView.setAdapter(new FadeInBottomAnimationAdapter(mAdapter));
+        mRecyclerView.setAdapter(new SlideInBottomAnimationAdapter(mAdapter));
 
         /*
         // Set the card elevation.
