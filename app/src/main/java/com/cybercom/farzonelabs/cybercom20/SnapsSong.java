@@ -9,7 +9,25 @@ public class SnapsSong {
         String mAuthor;
         String mMelody;
         String mSongText;
+        int mSongId;
         int mCategory;
+
+    public static int getCategoryDrawable(int category) {
+        switch (category){
+            default:
+            case 1: return R.drawable.backdrop_klassiker;
+            case 2: return R.drawable.backdrop_aa;
+            case 3: return R.drawable.backdrop_tillol;
+            case 4: return R.drawable.backdrop_tillvin;
+            case 5: return R.drawable.backdrop_tillsnaps;
+            case 6: return R.drawable.backdrop_tillpunsch;
+            case 7: return R.drawable.backdrop_skanskt;
+            case 8: return R.drawable.backdrop_ekivokt;
+            case 9: return R.drawable.backdrop_natur;
+            case 10: return R.drawable.backdrop_ovrigt;
+            case 11: return R.drawable.backdrop_vedertaget;
+        }
+    }
 
     public void setSongInfo(String title, String melody, String author){
         this.mTitle = title;
@@ -56,4 +74,13 @@ public class SnapsSong {
     public void setCategory(int category) {
         this.mCategory = category;
     }
+
+    public int getSongId() {
+        return mSongId;
+    }
+
+    public void setSongId(int mSongId) {
+        this.mSongId = mSongId;
+    }
+
 }

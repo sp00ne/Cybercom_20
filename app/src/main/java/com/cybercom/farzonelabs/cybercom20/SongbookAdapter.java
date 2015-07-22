@@ -3,6 +3,7 @@ package com.cybercom.farzonelabs.cybercom20;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class SongbookAdapter extends RecyclerView.Adapter<SongbookAdapter.ViewHo
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         // Your holder should contain a member variable
@@ -26,11 +28,13 @@ public class SongbookAdapter extends RecyclerView.Adapter<SongbookAdapter.ViewHo
         public TextView tvTitle;
         public TextView tvMelody;
         public TextView tvAuthor;
+        public final View mCardView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
             super(itemView);
+            mCardView = itemView;
             this.tvTitle = (TextView) itemView.findViewById(R.id.song_title);
             this.tvMelody = (TextView) itemView.findViewById(R.id.song_melody);
             this.tvAuthor = (TextView) itemView.findViewById(R.id.song_author);
@@ -38,7 +42,7 @@ public class SongbookAdapter extends RecyclerView.Adapter<SongbookAdapter.ViewHo
     }
 
     // Store the songs
-    private ArrayList<SnapsSong> snapsSongs;
+    public static ArrayList<SnapsSong> snapsSongs;
     // Store the context
     private Context context;
 
@@ -89,12 +93,23 @@ public class SongbookAdapter extends RecyclerView.Adapter<SongbookAdapter.ViewHo
      * @param position - Position in the array
      */
     @Override
-    public void onBindViewHolder(SongbookAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final SongbookAdapter.ViewHolder holder, int position) {
 
         SnapsSong snapsSong = snapsSongs.get(position);
         holder.tvTitle.setText(snapsSong.getTitle());
         holder.tvAuthor.setText(snapsSong.getAuthor());
         holder.tvMelody.setText(snapsSong.getMelody());
+
+        //Assign click listener
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d("RecyclerView","onClick");
+            }
+        });
+
+
     }
 
     @Override
