@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.animators.adapters.SlideInBottomAnimationAdapter;
 
@@ -35,7 +38,7 @@ public class SongbookCardFragment extends Fragment {
     /**
      * Cursors for data handling
      */
-    private Cursor mSongsInfo;
+    private ArrayList<SnapsSong> mSongsInfo;
     private Cursor mSongsText;
 
     /**
@@ -69,16 +72,32 @@ public class SongbookCardFragment extends Fragment {
 
         // Assign adapter
         db = new SongbookDatabase(context);
-        mSongsInfo = db.getSongsInfo();
+        mSongsInfo = db.getSongsInfoArrayList();
 
         mAdapter = new SongbookAdapter(mSongsInfo,mRecyclerView.getContext());
         mRecyclerView.setAdapter(new SlideInBottomAnimationAdapter(mAdapter));
 
-        /*
-        // Set the card elevation.
-        mCardView = (CardView) getActivity().findViewById(R.layout.song_item);
-        mCardView.setCardElevation(CARD_ELEVATION);
-    */
+        // Add listeners
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(View view, int position)
+            {
+                SnapsSong clickedSong = mSongsInfo.get(position);
+                Log.d("RecyclerView", "onItemClick: Position " + position);
+                Log.d("RecyclerView", "Title: " + clickedSong.getTitle());
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position)
+            {
+                SnapsSong clickedSong = mSongsInfo.get(position);
+                Log.d("RecyclerView", "onItemLongClick: Position " + position);
+                Log.d("RecyclerView", "Title: " + clickedSong.getTitle());
+            }
+        }));
+
         return mRecyclerView;
     }
 }
