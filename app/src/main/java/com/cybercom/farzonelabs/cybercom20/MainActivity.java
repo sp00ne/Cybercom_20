@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private final ScheduleFragment mScheduleFragment = new ScheduleFragment();
-    private final SongbookFragment mSongbookFragment = new SongbookFragment();
+    private final SongbookCardFragment mSongbookFragment = new SongbookCardFragment();
     private final FlowFragment mFlowFragment = new FlowFragment();
 
     private Handler mDrawerActionHandler = new Handler();
