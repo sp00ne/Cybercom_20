@@ -28,11 +28,10 @@
     <string name="close">close navigation drawer</string>
 
     <!-- Intent extras -->
-    <string name="PUSH_DATA">DATA</string>
+    <string name="PUSH_DATA">data</string>
     <string name="EXTRA_SONG_TITLE">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_TITLE</string>
 
     <!-- Intent extras -->
-    <string name="EXTRA_SONG_TITLE">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_TITLE</string>
     <string name="song">song</string>
 
 </resources>

@@ -88,27 +88,29 @@ public class MainActivity extends AppCompatActivity implements
 
         // Set correct font for mTitle. and drawer header
         TextView mToolbarTextView = getActionBarTextView();
-        mToolbarTextView.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.font_caecilia)));
+        mToolbarTextView.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.font_caecilia)));
 
         TextView mDrawerHeader = (TextView) findViewById(R.id.drawer_header_textview);
         mDrawerHeader.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.font_caecilia)));
 
         navigate(mNavItemId);
 
-        getSongFromIntent();
+//        getSongFromIntent();
 
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getSongFromIntent();
-    }
+        Log.i(TAG, "@onNewIntent");
+//        getSongFromIntent();
 
-    private void getSongFromIntent() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            Utils.printIntentData(TAG, bundle);
+        if (intent == null) {
+            Log.i(TAG, "intent == null");
+            return;
+        } else {
+            final String songName = intent.getStringExtra(getString(R.string.EXTRA_SONG_TITLE));
+            Log.i(TAG, "songName: " + songName);
         }
     }
 

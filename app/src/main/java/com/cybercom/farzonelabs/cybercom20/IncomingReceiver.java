@@ -41,9 +41,7 @@ public class IncomingReceiver extends BroadcastReceiver {
 
     private void generateNotification(Context context, String title, String json, String contenttext) {
         Intent intent = new Intent(context, MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(context.getString(R.string.EXTRA_SONG_TITLE), title);
-        intent.putExtras(bundle);
+        intent.putExtra(context.getString(R.string.EXTRA_SONG_TITLE), title);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -55,6 +53,7 @@ public class IncomingReceiver extends BroadcastReceiver {
     }
 
     private String getSongTitle(Intent intent) {
+        Log.i(TAG, "@getSongTitle");
         String jsonDataStr = intent.getExtras().getString(mContext.getString(R.string.PUSH_DATA));
 
         try {

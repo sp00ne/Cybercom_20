@@ -9,6 +9,7 @@ import android.util.Log;
 public class Utils {
 
     public static void printIntentData(final String TAG, Bundle bundle) {
+        Log.i(TAG, "TAG: " + TAG);
         for (String key : bundle.keySet()) {
             Object value = bundle.get(key);
             Log.d(TAG, String.format("%s %s (%s)", key,
