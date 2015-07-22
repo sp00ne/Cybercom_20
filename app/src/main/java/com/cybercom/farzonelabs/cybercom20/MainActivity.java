@@ -1,6 +1,7 @@
 package com.cybercom.farzonelabs.cybercom20;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final long DRAWER_CLOSE_DELAY_MS = 250;
     private static final String NAV_ITEM_ID = "navItemId";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private final ScheduleFragment mScheduleFragment = new ScheduleFragment();
     private final SongbookCardFragment mSongbookFragment = new SongbookCardFragment();
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "@onCreate");
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setFontAttrId(R.attr.fontPath)
@@ -84,13 +88,30 @@ public class MainActivity extends AppCompatActivity implements
 
         // Set correct font for mTitle. and drawer header
         TextView mToolbarTextView = getActionBarTextView();
-        mToolbarTextView.setTypeface(Typeface.createFromAsset(getAssets(),getString(R.string.font_caecilia)));
+        mToolbarTextView.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.font_caecilia)));
 
         TextView mDrawerHeader = (TextView) findViewById(R.id.drawer_header_textview);
         mDrawerHeader.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.font_caecilia)));
 
         navigate(mNavItemId);
 
+//        getSongFromIntent();
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.i(TAG, "@onNewIntent");
+//        getSongFromIntent();
+
+        if (intent == null) {
+            Log.i(TAG, "intent == null");
+            return;
+        } else {
+            final String songName = intent.getStringExtra(getString(R.string.EXTRA_SONG_TITLE));
+            Log.i(TAG, "songName: " + songName);
+        }
     }
 
     private TextView getActionBarTextView() {

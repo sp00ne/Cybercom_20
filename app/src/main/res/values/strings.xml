@@ -1,5 +1,8 @@
 <resources>
 
+    <string name="APP_ID">i1kR3R5KHoTzCBmi2uxSWvY4ysEYIVbJo4mAzxoQ</string>
+    <string name="CLIENT_KEY">eycY1xNLjoj3CRXQftw8rjkFRHIMhqXCaWJNS6eJ</string>
+
     <string name="app_name">Cybercom 20</string>
     <string name="font_caecilia">fonts/CaeciliaLTStd-Bold.otf</string>
     <string name="font_frutiger">fonts/FrutigerLTStd-Light.otf</string>
@@ -23,5 +26,12 @@
     <string name="item_3">Dela bilder!</string>
     <string name="open">open navigation drawer</string>
     <string name="close">close navigation drawer</string>
+
+    <!-- Intent extras -->
+    <string name="PUSH_DATA">data</string>
+    <string name="EXTRA_SONG_TITLE">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_TITLE</string>
+
+    <!-- Intent extras -->
+    <string name="song">song</string>
 
 </resources>
