@@ -1,11 +1,17 @@
 package com.cybercom.farzonelabs.cybercom20;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Song class used to create the song objects for use with the card view.
  * Created by mofar1 on 2015-07-15.
  */
-public class SnapsSong {
-        String mTitle;
+public class SnapsSong implements Serializable {
+
+    String mTitle;
         String mAuthor;
         String mMelody;
         String mSongText;
@@ -55,5 +61,16 @@ public class SnapsSong {
 
     public void setCategory(int category) {
         this.mCategory = category;
+    }
+
+    @Override
+    public String toString() {
+        return "SnapsSong{" +
+                "mTitle='" + mTitle + '\'' +
+                ", mAuthor='" + mAuthor + '\'' +
+                ", mMelody='" + mMelody + '\'' +
+                ", mSongText='" + mSongText + '\'' +
+                ", mCategory=" + mCategory +
+                '}';
     }
 }

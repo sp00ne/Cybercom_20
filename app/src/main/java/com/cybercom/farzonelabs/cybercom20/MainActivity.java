@@ -1,6 +1,7 @@
 package com.cybercom.farzonelabs.cybercom20;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final long DRAWER_CLOSE_DELAY_MS = 250;
     private static final String NAV_ITEM_ID = "navItemId";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private final ScheduleFragment mScheduleFragment = new ScheduleFragment();
     private final SongbookFragment mSongbookFragment = new SongbookFragment();
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "@onCreate");
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                         .setFontAttrId(R.attr.fontPath)
@@ -91,6 +95,21 @@ public class MainActivity extends AppCompatActivity implements
 
         navigate(mNavItemId);
 
+        getSongFromIntent();
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getSongFromIntent();
+    }
+
+    private void getSongFromIntent() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            Utils.printIntentData(TAG, bundle);
+        }
     }
 
     private TextView getActionBarTextView() {
