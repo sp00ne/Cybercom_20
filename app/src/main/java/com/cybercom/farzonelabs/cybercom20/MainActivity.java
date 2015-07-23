@@ -94,16 +94,12 @@ public class MainActivity extends AppCompatActivity implements
         mDrawerHeader.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.font_caecilia)));
 
         navigate(mNavItemId);
-
-//        getSongFromIntent();
-
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i(TAG, "@onNewIntent");
-//        getSongFromIntent();
 
         if (intent == null) {
             Log.i(TAG, "intent == null");

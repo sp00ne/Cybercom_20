@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -31,38 +30,49 @@ public class IncomingReceiver extends BroadcastReceiver {
                 return;
             } else {
                 mContext = context;
-                final String songTitle = getSongTitle(intent);
-                generateNotification(context, songTitle, null, songTitle);
+                final String songId = getSongId(intent);
+                getSongByIdFromDb(Integer.parseInt(songId));
+                generateNotification(getSongByIdFromDb(Integer.parseInt(songId)));
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
 
-    private void generateNotification(Context context, String title, String json, String contenttext) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(context.getString(R.string.EXTRA_SONG_TITLE), title);
+    private void generateNotification(SnapsSong snapsSong) {
+        if (snapsSong == null) {
+            Log.i(TAG, "@generateNotification @snapsSong == null");
+            return;
+        }
+
+        Intent intent = new Intent(mContext, SongbookDetailActivity.class);
+        intent = intent.putExtra(mContext.getString(R.string.EXTRA_SONG_OBJECT), snapsSong);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle(title).setContentText(contenttext).setNumber(++numMessages).setAutoCancel(true);
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle(snapsSong.getTitle()).setContentText(snapsSong.getAuthor()).setNumber(++numMessages).setAutoCancel(true);
         mBuilder.setContentIntent(contentIntent);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private String getSongTitle(Intent intent) {
-        Log.i(TAG, "@getSongTitle");
+    private String getSongId(Intent intent) {
+        Log.i(TAG, "@getSongId");
         String jsonDataStr = intent.getExtras().getString(mContext.getString(R.string.PUSH_DATA));
 
         try {
             JSONObject jsonObject = new JSONObject(jsonDataStr);
-            return jsonObject.getString(mContext.getString(R.string.song));
+            return jsonObject.getString(mContext.getString(R.string.id));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private SnapsSong getSongByIdFromDb(int id) {
+        SongbookDatabase db = new SongbookDatabase(mContext);
+        return db.getSnapsSongById(id);
     }
 }
