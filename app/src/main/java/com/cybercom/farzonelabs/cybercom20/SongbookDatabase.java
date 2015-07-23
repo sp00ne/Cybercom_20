@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
+
 /**
  * Loads the precreated database from the assets folder
  * Created by mofar1 on 2015-07-17.
@@ -59,6 +61,22 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         return c;
     }
 
+    public ArrayList<SnapsSong> getSongsInfoArrayList(){
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+        String[] sqlSelect = {COLUMNS.id, COLUMNS.title, COLUMNS.author, COLUMNS.melody, COLUMNS.category};
+        String sqlTables = TABLES.SONGS;
+
+        queryBuilder.setTables(sqlTables);
+        Cursor c = queryBuilder.query(db, sqlSelect, null, null,
+                null, null, null);
+
+        c.moveToFirst();
+
+        return convertCursorToArraylist(c);
+    }
+
     public Cursor getSongText(){
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
@@ -71,5 +89,23 @@ public class SongbookDatabase extends SQLiteAssetHelper {
 
         return c;
 
+    }
+
+    private ArrayList<SnapsSong> convertCursorToArraylist(Cursor dbSongInfo) {
+
+        ArrayList<SnapsSong> snapsSongs = new ArrayList<>();
+
+        dbSongInfo.moveToFirst();
+        while(!dbSongInfo.isAfterLast()) {
+            SnapsSong snapsSong = new SnapsSong();
+            String title = dbSongInfo.getString(dbSongInfo.getColumnIndex(COLUMNS.title));
+            String author = dbSongInfo.getString(dbSongInfo.getColumnIndex(COLUMNS.author));
+            String melody = dbSongInfo.getString(dbSongInfo.getColumnIndex(COLUMNS.melody));
+            snapsSong.setSongInfo(title, melody, author);
+
+            snapsSongs.add(snapsSong); //add the item
+            dbSongInfo.moveToNext();
+        }
+        return snapsSongs;
     }
 }
