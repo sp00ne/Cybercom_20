@@ -6,6 +6,7 @@ package com.cybercom.farzonelabs.cybercom20;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -68,13 +69,13 @@ public class SongbookCardFragment extends Fragment {
 
     private View inflateAndSetup(ViewGroup container) {
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_songbook, container, false);
         final Context context = mRecyclerView.getContext();
 
         //Init the color animation if there is one and assign the new PREV_BACKGROUND
-        if (AnimationClass.PREV_BACKGROUND != null) {
-            AnimationClass.switchColor(2, mRecyclerView);
+        if(AnimationClass.PREV_BACKGROUND != null){
+            AnimationClass.switchColor(2,mRecyclerView);
         }
         AnimationClass.PREV_BACKGROUND = mRecyclerView.getBackground();
 
@@ -86,88 +87,44 @@ public class SongbookCardFragment extends Fragment {
         db = new SongbookDatabase(context);
         mSongsInfo = db.getSongsInfoArrayList();
 
-        mAdapter = new SongbookAdapter(mSongsInfo, mRecyclerView.getContext());
+        mAdapter = new SongbookAdapter(mSongsInfo,mRecyclerView.getContext());
         mRecyclerView.setAdapter(new SlideInBottomAnimationAdapter(mAdapter));
 
         // Add listeners
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, int position)
+            {
+                // Extract clicked SnapsSong object
                 SnapsSong clickedSong = mSongsInfo.get(position);
+
+                // Query the song text from db. Since it is now requested for the detailed view
+                // and set it to the clicked song object.
+                int id = position + 1;
+                String clickedSongText = db.getSongTextBySongId(id);
+                clickedSong.setSongText(clickedSongText);
+
+                // Create the intent of detailed song and start the new activity
+                Intent intent = new Intent(context, SongbookDetailActivity.class);
+                intent = intent.putExtra(getActivity().getString(R.string.EXTRA_SONG_OBJECT), clickedSong);
+                startActivity(intent);
+
                 Log.d("RecyclerView", "onItemClick: Position " + position);
                 Log.d("RecyclerView", "Title: " + clickedSong.getTitle());
+
             }
 
             @Override
-            public void onItemLongClick(View view, int position) {
+            public void onItemLongClick(View view, int position)
+            {
                 SnapsSong clickedSong = mSongsInfo.get(position);
-                Log.d(TAG, "onItemLongClick: Position " + position);
-                Log.d(TAG, "Title: " + clickedSong.getTitle());
-
-                final String uuid = Utils.getUuid(context);
-
-                if (uuid == null) {
-                    return;
-                }
-
-//                if (!uuid.equals(getString(R.string.uuid_emil))) {
-//                    return;
-//                }
-
-                pushAlertDialog(position);
+                Log.d("RecyclerView", "onItemLongClick: Position " + position);
+                Log.d("RecyclerView", "Title: " + clickedSong.getTitle());
             }
         }));
 
         return mRecyclerView;
-    }
-
-    private void sendPush(int position) {
-        ParsePush push = new ParsePush();
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-            jsonObject.put("id", String.valueOf(position));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        push.setData(jsonObject);
-        push.setChannel("");
-        push.sendInBackground();
-        push.sendInBackground(new SendCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, "success");
-                } else {
-                    Log.i(TAG, "fail");
-                    Log.i(TAG, "e.getMessage(): " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void pushAlertDialog(final int position) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-        builder1.setMessage("Skicka push?");
-        builder1.setCancelable(true);
-        builder1.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        sendPush(position);
-                        dialog.cancel();
-                    }
-                });
-        builder1.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = builder1.create();
-        alertDialog.show();
     }
 }
 
