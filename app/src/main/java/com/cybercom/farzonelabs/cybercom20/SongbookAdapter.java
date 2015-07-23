@@ -83,17 +83,6 @@ public class SongbookAdapter extends RecyclerView.Adapter<SongbookAdapter.ViewHo
         holder.tvAuthor.setText(snapsSong.getAuthor());
         holder.tvMelody.setText(snapsSong.getMelody());
 
-        /*
-        //Assign click listener
-        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.d("RecyclerView","onClick");
-            }
-        });
-        */
-
     }
 
     @Override

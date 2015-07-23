@@ -58,6 +58,8 @@ public class SongbookDatabase extends SQLiteAssetHelper {
                 null, null, null);
 
         c.moveToFirst();
+        db.close();
+
         return c;
     }
 
@@ -73,6 +75,7 @@ public class SongbookDatabase extends SQLiteAssetHelper {
                 null, null, null);
 
         c.moveToFirst();
+        db.close();
 
         return convertCursorToArraylist(c);
     }
