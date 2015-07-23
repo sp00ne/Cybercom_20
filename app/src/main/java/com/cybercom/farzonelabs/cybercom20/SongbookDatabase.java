@@ -40,13 +40,13 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         String category = "CATEGORY";
     }
 
-    public SongbookDatabase(Context context){
+    public SongbookDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.mContext = context;
     }
 
 
-    public Cursor getSongsInfo(){
+    public Cursor getSongsInfo() {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
@@ -61,7 +61,26 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         return c;
     }
 
-    public ArrayList<SnapsSong> getSongsInfoArrayList(){
+    public SnapsSong getSnapsSongById(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+        String[] SELECT = {COLUMNS.id, COLUMNS.title, COLUMNS.author, COLUMNS.melody, COLUMNS.category};
+        String FROM = TABLES.SONGS;
+        String WHERE = "ID=" + id;
+
+        queryBuilder.setTables(FROM);
+        Cursor c = queryBuilder.query(db, SELECT, WHERE, null,
+                null, null, null);
+
+        c.moveToFirst();
+
+        SnapsSong snapsSong = convertCursorToArraylist(c).get(0);
+
+        return snapsSong;
+    }
+
+    public ArrayList<SnapsSong> getSongsInfoArrayList() {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
@@ -77,7 +96,7 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         return convertCursorToArraylist(c);
     }
 
-    public Cursor getSongText(){
+    public Cursor getSongText() {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
@@ -88,15 +107,13 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         Cursor c = queryBuilder.query(db, sqlSelect, null, null, null, null, null);
 
         return c;
-
     }
 
     private ArrayList<SnapsSong> convertCursorToArraylist(Cursor dbSongInfo) {
-
         ArrayList<SnapsSong> snapsSongs = new ArrayList<>();
 
         dbSongInfo.moveToFirst();
-        while(!dbSongInfo.isAfterLast()) {
+        while (!dbSongInfo.isAfterLast()) {
             SnapsSong snapsSong = new SnapsSong();
             String title = dbSongInfo.getString(dbSongInfo.getColumnIndex(COLUMNS.title));
             String author = dbSongInfo.getString(dbSongInfo.getColumnIndex(COLUMNS.author));
