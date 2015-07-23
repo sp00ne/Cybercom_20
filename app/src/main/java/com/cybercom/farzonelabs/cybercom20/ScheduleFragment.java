@@ -23,7 +23,7 @@ public class ScheduleFragment extends Fragment {
     private View inflateAndSetup(LayoutInflater inflater, ViewGroup container) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
         if(AnimationClass.PREV_BACKGROUND != null){
-            AnimationClass.switchColor(1,rootView);
+            AnimationClass.switchSectionColor(1, rootView);
         }
 
         //Init the color animation if there is one and assign the new PREV_BACKGROUND

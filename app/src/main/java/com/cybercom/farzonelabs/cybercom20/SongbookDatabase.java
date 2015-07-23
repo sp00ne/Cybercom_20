@@ -110,6 +110,7 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         queryBuilder.setTables(sqlTables);
         Cursor c = queryBuilder.query(db, sqlSelect, sqlWhere, null, null, null, null);
 
+        c.moveToFirst();
         String songText = c.getString(c.getColumnIndex(COLUMNS.songtext));
 
         return songText;

@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,7 +27,7 @@ public class AnimationClass {
      * @param rootView - the rootView object.
      */
 
-    public static void switchColor(int sectionNumber, View rootView){
+    public static void switchSectionColor(int sectionNumber, View rootView){
         // Extract the color of the loading screen when loading is complete
         // If the animation has ended the variable is set, otherwise it's null.
         if(PREV_BACKGROUND != null){
@@ -41,6 +42,15 @@ public class AnimationClass {
             animateBackgroundStatusBarToolBar(rootView, MainActivity.mDrawerLayout, MainActivity.mToolbar, sectionColorFrom, sectionColorTo);
 
         }
+    }
+
+    public static void switchFABColor(View actionButtonView, int colorToId){
+
+        FloatingActionButton fab = (FloatingActionButton) actionButtonView;
+        int fabColorFrom = getFabColorFrom(fab);
+
+
+
     }
 
     private static void animateBackgroundStatusBarToolBar(View view, final DrawerLayout layout, final Toolbar toolbar, int colorFrom, int colorTo) {
@@ -85,6 +95,17 @@ public class AnimationClass {
         objAnimToolbar.start();
         valAnimStatusBar.start();
         */
+    }
+
+    private static int getFabColorFrom(FloatingActionButton fab){
+        int colorFrom = Color.TRANSPARENT;     //set a default color in case there was an error.
+        Drawable background = fab.getBackground();
+
+        if (background instanceof ColorDrawable) {
+            background.setAlpha(255);
+            colorFrom = ((ColorDrawable) background).getColor();
+        }
+        return colorFrom;
     }
 
     private static int getSectionColorFrom() {

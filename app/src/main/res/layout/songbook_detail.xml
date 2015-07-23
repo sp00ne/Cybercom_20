@@ -66,9 +66,9 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/detail_song_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Info"
                         fontPath="@string/font_frutiger"
                         android:textSize="20sp"
                         tools:ignore="MissingPrefix" />

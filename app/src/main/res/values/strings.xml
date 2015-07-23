@@ -36,5 +36,6 @@
     <!-- Push keys -->
     <string name="song">song</string>
     <string name="id">id</string>
+    <string name="picture_button">Take picture</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -38,9 +39,19 @@ public class SongbookDetailActivity extends AppCompatActivity {
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(mSnapsSong.getTitle());
 
+        setSongText(mSnapsSong.getSongText());
         // Extract the category of the chosen song for the backdrop
 //        final int songCategory = intent.getIntExtra(SONG_CATEGORY, 1);
         loadBackdrop(mSnapsSong.getCategory());
+    }
+
+    /**
+     * Set the songtext textview.
+     * @param songText - Self-explanatory...
+     */
+    private void setSongText(String songText) {
+        TextView tvSongText = (TextView) findViewById(R.id.detail_song_text);
+        tvSongText.setText(songText);
     }
 
     @Override
