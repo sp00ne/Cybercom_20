@@ -6,6 +6,7 @@ package com.cybercom.farzonelabs.cybercom20;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -56,9 +57,9 @@ public class SongbookCardFragment extends Fragment {
 
     private View inflateAndSetup(ViewGroup container) {
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_songbook, container, false);
-        Context context = mRecyclerView.getContext();
+        final Context context = mRecyclerView.getContext();
 
         //Init the color animation if there is one and assign the new PREV_BACKGROUND
         if(AnimationClass.PREV_BACKGROUND != null){
@@ -83,7 +84,20 @@ public class SongbookCardFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position)
             {
+                // Extract clicked SnapsSong object
                 SnapsSong clickedSong = mSongsInfo.get(position);
+
+                // Query the song text from db. Since it is now requested for the detailed view
+                // and set it to the clicked song object.
+                int id = position + 1;
+                String clickedSongText = db.getSongTextBySongId(id);
+                clickedSong.setSongText(clickedSongText);
+
+                // Create the intent of detailed song and start the new activity
+                Intent intent = new Intent(context, SongbookDetailActivity.class);
+                intent = intent.putExtra(getActivity().getString(R.string.EXTRA_SONG_OBJECT), clickedSong);
+                startActivity(intent);
+
                 Log.d("RecyclerView", "onItemClick: Position " + position);
                 Log.d("RecyclerView", "Title: " + clickedSong.getTitle());
 

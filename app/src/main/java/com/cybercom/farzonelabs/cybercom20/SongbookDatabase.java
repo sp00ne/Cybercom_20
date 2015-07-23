@@ -63,7 +63,7 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         return c;
     }
 
-    public SnapsSong getSnapsSongById(int id) {
+    public SnapsSong getSnapsSongBySongId(int id) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
@@ -99,17 +99,20 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         return convertCursorToArraylist(c);
     }
 
-    public Cursor getSongText() {
+    public String getSongTextBySongId(int id) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         String[] sqlSelect = {COLUMNS.id, COLUMNS.songtext};
+        String sqlWhere = "ID=" + id;
         String sqlTables = TABLES.SONGS;
 
         queryBuilder.setTables(sqlTables);
-        Cursor c = queryBuilder.query(db, sqlSelect, null, null, null, null, null);
+        Cursor c = queryBuilder.query(db, sqlSelect, sqlWhere, null, null, null, null);
 
-        return c;
+        String songText = c.getString(c.getColumnIndex(COLUMNS.songtext));
+
+        return songText;
     }
 
     private ArrayList<SnapsSong> convertCursorToArraylist(Cursor dbSongInfo) {

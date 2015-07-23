@@ -19,19 +19,6 @@ import com.bumptech.glide.Glide;
 public class SongbookDetailActivity extends AppCompatActivity {
 
     private static final String TAG = SongbookDetailActivity.class.getSimpleName();
-    /**
-     * (KEY) The song ID that is pushed in via the intent.
-     */
-    public static final String SONG_POSITION = "song_position";
-    /**
-     * (KEY) Title of the song picked or received from push
-     */
-    public static final String SONG_TITLE = "song_title";
-    /**
-     * (KEY) for the string category
-     */
-    public static final String SONG_CATEGORY = "song_category";
-
     private SnapsSong mSnapsSong;
 
     @Override
@@ -42,9 +29,6 @@ public class SongbookDetailActivity extends AppCompatActivity {
         Log.i(TAG, "@onCreate");
 
         mSnapsSong = getIntent().getParcelableExtra(getString(R.string.EXTRA_SONG_OBJECT));
-
-//        final String songPosition = intent.getStringExtra(SONG_POSITION);
-//        final String songTitle = intent.getStringExtra(SONG_TITLE);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

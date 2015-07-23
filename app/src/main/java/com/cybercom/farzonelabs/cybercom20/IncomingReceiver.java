@@ -73,6 +73,6 @@ public class IncomingReceiver extends BroadcastReceiver {
 
     private SnapsSong getSongByIdFromDb(int id) {
         SongbookDatabase db = new SongbookDatabase(mContext);
-        return db.getSnapsSongById(id);
+        return db.getSnapsSongBySongId(id);
     }
 }
