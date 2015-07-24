@@ -1,5 +1,8 @@
 package com.cybercom.farzonelabs.cybercom20;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -20,6 +23,9 @@ public class AnimationClass {
      * Create the variable that needs to be passed in for the Load screen color
      */
     public static Drawable PREV_BACKGROUND;
+
+
+    private int animationFinishedCount = 0;
 
     /**
      * The color iterator for the different fragments
@@ -46,10 +52,37 @@ public class AnimationClass {
 
     public static void switchFABColor(View actionButtonView, int colorToId){
 
-        FloatingActionButton fab = (FloatingActionButton) actionButtonView;
+        final FloatingActionButton fab = (FloatingActionButton) actionButtonView;
         int fabColorFrom = getFabColorFrom(fab);
+        int fabColorTo = actionButtonView.getResources().getColor(colorToId);
 
 
+        ValueAnimator valueAnimator = ValueAnimator.ofArgb(fabColorFrom, fabColorTo);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                fab.setBackgroundColor((Integer) animation.getAnimatedValue());
+            }
+        });
+
+        valueAnimator.start();
+
+    }
+
+    private void startColorRotationAnimation(View animatedView, final int nrOfAnimations) {
+        final AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(animatedView.getContext(), R.animator.background_color_rotator);
+
+        set.setTarget(animatedView);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                if (++animationFinishedCount == nrOfAnimations) { set.end(); }
+                set.start();
+            }
+        });
+        set.start();
 
     }
 

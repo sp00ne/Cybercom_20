@@ -5,24 +5,25 @@
 
     <objectAnimator
         android:propertyName="backgroundColor"
-        android:duration="3000"
-        android:valueFrom="@color/BlueCybercom"
-        android:valueTo="@color/GreenCybercom" />
-    <objectAnimator
-        android:propertyName="backgroundColor"
-        android:duration="3000"
+        android:duration="1000"
         android:valueFrom="@color/GreenCybercom"
         android:valueTo="@color/OrangeCybercom" />
     <objectAnimator
         android:propertyName="backgroundColor"
-        android:duration="3000"
+        android:duration="1000"
         android:valueFrom="@color/OrangeCybercom"
         android:valueTo="@color/PurpleCybercom" />
     <objectAnimator
         android:propertyName="backgroundColor"
-        android:duration="3000"
+        android:duration="1000"
         android:valueFrom="@color/PurpleCybercom"
         android:valueTo="@color/BlueCybercom" />
+
+    <objectAnimator
+        android:propertyName="backgroundColor"
+        android:duration="1000"
+        android:valueFrom="@color/BlueCybercom"
+        android:valueTo="@color/GreenCybercom" />
 
 
 </set>
