@@ -52,7 +52,7 @@ public class IncomingReceiver extends BroadcastReceiver {
 
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle(snapsSong.getTitle()).setContentText(snapsSong.getAuthor()).setNumber(++numMessages).setAutoCancel(true);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle("Nu ska det sjungas!").setContentText(snapsSong.getTitle()).setNumber(++numMessages).setAutoCancel(true);
         mBuilder.setContentIntent(contentIntent);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
