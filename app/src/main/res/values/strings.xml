@@ -32,7 +32,7 @@
     <string name="PREFS_UUID_NUMBER">PREFS_UUID_NUMBER</string>
 
     <!-- Intent extras -->
-    <string name="PUSH_DATA">data</string>
+    <string name="PUSH_DATA">com.parse.Data</string>
     <string name="EXTRA_SONG_TITLE">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_TITLE</string>
     <string name="EXTRA_SONG_ID">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_ID</string>
     <string name="EXTRA_SONG_OBJECT">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_OBJECT</string>
@@ -42,11 +42,8 @@
     <string name="id">id</string>
 
     <!-- uuid -->
-    <string name="uuid_emil">357246053725048</string>
+    <!-- For test purpose only -->
+    <string name="uuid_me">357246053725048</string>
     <string name="PUSH_CHANNEL">Cybercom20</string>
-
-    <!-- -->
-    <string name="zero_server_token">gcmdev_BrauNDgpkDRXMvrrwACU</string>
-    <string name="zero_app_token">gcmdev_wjStrXE18HRF7RFk8yrg</string>
 
 </resources>

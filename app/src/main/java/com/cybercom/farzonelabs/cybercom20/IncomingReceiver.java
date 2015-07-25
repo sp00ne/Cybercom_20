@@ -61,11 +61,19 @@ public class IncomingReceiver extends BroadcastReceiver {
         Log.i(TAG, "@getSongId");
         String jsonDataStr = intent.getExtras().getString(mContext.getString(R.string.PUSH_DATA));
 
-        try {
-            JSONObject jsonObject = new JSONObject(jsonDataStr);
-            return jsonObject.getString(mContext.getString(R.string.id));
-        } catch (JSONException e) {
-            e.printStackTrace();
+//        Utils.printIntentData(TAG, intent.getExtras());
+
+
+        if (jsonDataStr != null) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(jsonDataStr);
+                return jsonObject.getString(mContext.getString(R.string.id));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "jsonDataStr == null");
         }
 
         return null;

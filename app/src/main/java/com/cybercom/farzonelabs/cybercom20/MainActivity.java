@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String NAV_ITEM_ID = "navItemId";
     private static final String TAG = MainActivity.class.getSimpleName();
 
+
     private final ScheduleFragment mScheduleFragment = new ScheduleFragment();
     private final SongbookCardFragment mSongbookFragment = new SongbookCardFragment();
     private final FlowFragment mFlowFragment = new FlowFragment();
@@ -222,5 +223,4 @@ public class MainActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         outState.putInt(NAV_ITEM_ID, mNavItemId);
     }
-
 }
