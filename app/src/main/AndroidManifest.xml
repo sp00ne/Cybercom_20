@@ -2,24 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cybercom.farzonelabs.cybercom20">
 
-    <meta-data
+    <!--<meta-data
         android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
+        android:value="@integer/google_play_services_version" />-->
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <!-- Permission to get DeviceId -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <!-- GCM connects to Google Services. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <!--
+     Creates a custom permission so only this app can receive its messages.
+
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name.
+    -->
     <permission
         android:name="com.cybercom.farzonelabs.cybercom20.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.cybercom.farzonelabs.cybercom20.permission.C2D_MESSAGE" />
+        android:protectionLevel="signature"/>
+    <uses-permission
+        android:name="com.cybercom.farzonelabs.cybercom20.permission.C2D_MESSAGE"/>
 
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+    <!-- GCM requires Android SDK version 2.2 (API level 8) or above. -->
+    <!-- The targetSdkVersion is optional, but it's always a good practice
+         to target higher versions. -->
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
 
     <application
         android:name=".ParseApp"
@@ -33,8 +53,11 @@
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
+                <action android:name="com.cybercom.farzonelabs.cybercom20.android.MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,32 +66,53 @@
             android:name=".SongbookDetailActivity"
             android:launchMode="singleTop"></activity>
 
-        <service android:name="com.parse.PushService" />
+        <meta-data
+            android:name="PW_APPID" android:value="67209-75C80" />
+        <meta-data
+            android:name="PW_PROJECT_ID" android:value="A1041007901330" />
+
+
+        <activity android:name="com.pushwoosh.richpages.RichPageActivity" />
+        <activity android:name="com.pushwoosh.MessageActivity" />
+        <activity android:name="com.pushwoosh.PushHandlerActivity" />
 
         <receiver
-            android:name=".IncomingReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.parse.push.intent.RECEIVE" />
-                <action android:name="com.parse.push.intent.DELETE" />
-                <action android:name="com.parse.push.intent.OPEN" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
                 <category android:name="com.cybercom.farzonelabs.cybercom20" />
             </intent-filter>
         </receiver>
 
+        <service
+            android:name="com.pushwoosh.GCMListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
 
-        <meta-data
-            android:name="com.cybercom.farzonelabs.cybercom20"
-            android:resource="@drawable/ic_action_cybercom_symbol" />
+        <service
+            android:name="com.pushwoosh.GCMInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.pushwoosh.GCMRegistrationService"
+            android:exported="false">
+        </service>
+
+        <!--
+          Service for sending location updates
+        -->
+        <service android:name="com.pushwoosh.location.GeoLocationService" />
+
+        <receiver android:name="com.pushwoosh.local.AlarmReceiver" />
 
     </application>
 

@@ -20,6 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.pushwoosh.fragment.PushEventListener;
+import com.pushwoosh.fragment.PushFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -28,7 +34,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, PushEventListener {
 
     private static final long DRAWER_CLOSE_DELAY_MS = 250;
     private static final String NAV_ITEM_ID = "navItemId";
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 
+        PushFragment.init(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -98,17 +105,28 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.i(TAG, "@onNewIntent");
+        PushFragment.onNewIntent(this, intent);
 
-        if (intent == null) {
+        /*if (intent == null) {
             Log.i(TAG, "intent == null");
             return;
         } else {
             final String songName = intent.getStringExtra(getString(R.string.EXTRA_SONG_TITLE));
             Log.i(TAG, "songName: " + songName);
-        }
+        }*/
     }
 
     private TextView getActionBarTextView() {
@@ -222,5 +240,77 @@ public class MainActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(NAV_ITEM_ID, mNavItemId);
+    }
+
+    @Override
+    public void doOnUnregisteredError(String s) {
+        Log.i(TAG, "@doOnUnregisteredError");
+        Log.i(TAG, s);
+    }
+
+    @Override
+    public void doOnRegisteredError(String s) {
+        Log.i(TAG, "@doOnRegisteredError");
+        Log.i(TAG, s);
+    }
+
+    @Override
+    public void doOnRegistered(String s) {
+        Log.i(TAG, "@doOnRegistered");
+        Log.i(TAG, s);
+    }
+
+    @Override
+    public void doOnMessageReceive(String s) {
+        Log.i(TAG, "@doOnMessageReceive");
+        Log.i(TAG, s);
+
+        if (s != null) {
+            String songId = getSongId(s);
+            if (songId != null) {
+                try {
+                    SnapsSong song = getSongByIdFromDb(Integer.parseInt(songId));
+                    if (song != null) {
+                        Intent intent = new Intent(this, SongbookDetailActivity.class);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                        intent.putExtra(getString(R.string.EXTRA_SONG_OBJECT), song);
+
+                        startActivity(intent);
+                    } else {
+                        Log.i(TAG, "song == null");
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void doOnUnregistered(String s) {
+        Log.i(TAG, "@doOnUnregistered");
+        Log.i(TAG, s);
+    }
+
+    private String getSongId(String data) {
+        Log.i(TAG, "@getSongId");
+
+        try {
+            JSONObject jsonObjectAll = new JSONObject(data);
+            JSONObject jsonObjectU = new JSONObject(jsonObjectAll.getString("u"));
+            return jsonObjectU.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private SnapsSong getSongByIdFromDb(int id) {
+        SongbookDatabase db = new SongbookDatabase(this);
+        return db.getSnapsSongBySongId(id);
     }
 }

@@ -4,12 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.SaveCallback;
-
 /**
  * Created by empet1 on 2015-07-21.
  */
@@ -21,6 +15,7 @@ public class ParseApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        /*
         Parse.initialize(this, getString(R.string.APP_ID), getString(R.string.CLIENT_KEY));
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground("", new SaveCallback() {
@@ -34,6 +29,7 @@ public class ParseApp extends Application {
                 }
             }
         });
+        */
     }
 
     private void storeUserUuid() {
