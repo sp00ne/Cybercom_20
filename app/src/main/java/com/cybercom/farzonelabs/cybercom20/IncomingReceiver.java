@@ -52,7 +52,7 @@ public class IncomingReceiver extends BroadcastReceiver {
 
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle(snapsSong.getTitle()).setContentText(snapsSong.getAuthor()).setNumber(++numMessages).setAutoCancel(true);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(R.drawable.ic_action_cybercom_symbol).setContentTitle("Nu ska det sjungas!").setContentText(snapsSong.getTitle()).setNumber(++numMessages).setAutoCancel(true);
         mBuilder.setContentIntent(contentIntent);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
@@ -61,11 +61,19 @@ public class IncomingReceiver extends BroadcastReceiver {
         Log.i(TAG, "@getSongId");
         String jsonDataStr = intent.getExtras().getString(mContext.getString(R.string.PUSH_DATA));
 
-        try {
-            JSONObject jsonObject = new JSONObject(jsonDataStr);
-            return jsonObject.getString(mContext.getString(R.string.id));
-        } catch (JSONException e) {
-            e.printStackTrace();
+//        Utils.printIntentData(TAG, intent.getExtras());
+
+
+        if (jsonDataStr != null) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(jsonDataStr);
+                return jsonObject.getString(mContext.getString(R.string.id));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "jsonDataStr == null");
         }
 
         return null;

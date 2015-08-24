@@ -27,8 +27,12 @@
     <string name="open">open navigation drawer</string>
     <string name="close">close navigation drawer</string>
 
+    <!--  -->
+    <string name="PREFS_UUID">PREFS_UUID</string>
+    <string name="PREFS_UUID_NUMBER">PREFS_UUID_NUMBER</string>
+
     <!-- Intent extras -->
-    <string name="PUSH_DATA">data</string>
+    <string name="PUSH_DATA">com.parse.Data</string>
     <string name="EXTRA_SONG_TITLE">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_TITLE</string>
     <string name="EXTRA_SONG_ID">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_ID</string>
     <string name="EXTRA_SONG_OBJECT">com.cybercom.farzonelabs.cybercom20.EXTRA_SONG_OBJECT</string>
@@ -37,5 +41,10 @@
     <string name="song">song</string>
     <string name="id">id</string>
     <string name="picture_button">Take picture</string>
+
+    <!-- uuid -->
+    <!-- For test purpose only -->
+    <string name="uuid_me">357246053725048</string>
+    <string name="PUSH_CHANNEL">Cybercom20</string>
 
 </resources>

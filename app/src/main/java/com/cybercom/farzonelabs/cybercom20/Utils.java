@@ -1,6 +1,8 @@
 package com.cybercom.farzonelabs.cybercom20;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 /**
@@ -15,5 +17,10 @@ public class Utils {
             Log.d(TAG, String.format("%s %s (%s)", key,
                     value.toString(), value.getClass().getName()));
         }
+    }
+
+    public static String getUuid(Context context) {
+        TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return tManager.getDeviceId();
     }
 }

@@ -103,7 +103,7 @@ public class SongbookDatabase extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {COLUMNS.id, COLUMNS.songtext};
+        String[] sqlSelect = {COLUMNS.songtext};
         String sqlWhere = "ID=" + id;
         String sqlTables = TABLES.SONGS;
 
