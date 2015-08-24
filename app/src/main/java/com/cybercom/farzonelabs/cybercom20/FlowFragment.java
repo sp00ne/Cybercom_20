@@ -1,18 +1,13 @@
 package com.cybercom.farzonelabs.cybercom20;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -30,25 +25,35 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -199,6 +204,17 @@ public class FlowFragment extends Fragment implements View.OnClickListener {
      * This is the output file for our picture.
      */
     private File mFile;
+
+    /**
+     * Path to image
+     */
+
+    private String mCurrentPhotoPath;
+
+    /**
+     * Context
+     */
+    private Context mContext;
 
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
@@ -395,12 +411,13 @@ public class FlowFragment extends Fragment implements View.OnClickListener {
         fab.setOnClickListener(this);
         //view.findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+
+        mContext = view.getContext();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
     }
 
     @Override
@@ -652,6 +669,31 @@ public class FlowFragment extends Fragment implements View.OnClickListener {
      */
     private void takePicture() {
         lockFocus();
+        //CharSequence rightNow  = DateFormat.format("MM-dd-yy hh-mm-ss", new Date().getTime());
+        //mFile = new File(getActivity().getExternalFilesDir(null), rightNow + ".jpg");
+        try {
+            mFile = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("HH-mm-ss", Locale.getDefault()).format(new Date());
+        String imageFileName = "Cybercom20_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 
     /**
@@ -720,17 +762,63 @@ public class FlowFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
                                                TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
+                    Log.d(TAG, "Saved: " + mFile);
+                    showToast("Captured :)");
+                    //saveFileToGallery();
+                    createInstagramIntent(mContext);
                     unlockFocus();
                 }
             };
 
             mCaptureSession.stopRepeating();
             mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Self-explanatory...
+     */
+    private void saveFileToGallery() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        mContext.sendBroadcast(mediaScanIntent);
+    }
+
+    private void createInstagramIntent(Context context) {
+
+    Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+        if (intent != null)
+        {
+
+            // Create the new Intent using the 'Send' action.
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/jpeg");
+
+            Uri uri = Uri.fromFile(mFile);
+
+            // Add the URI to the Intent.
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+
+            // Broadcast the Intent.
+            startActivity(Intent.createChooser(share, "Share your Cybercom 20 photo to:"));
+        }
+        else
+        {
+            // bring user to the market to download the app.
+            // or let them choose an app?
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("market://details?id="+"com.instagram.android"));
+            startActivity(intent);
+            }
+
+        }
 
     /**
      * Unlock the focus. This method should be called when still image capture sequence is finished.
