@@ -3,8 +3,8 @@
 
     <color name="secondary">#ff752c5e</color>
     <color name="secondaryDark">#ff611c4b</color>
-    <color name="primary">@color/PurpleCybercom</color>
-    <color name="primaryDark">@color/PurpleCybercom</color>
+    <color name="primary">#212121</color>
+    <color name="primaryDark">#000000</color>
     <color name="ternary">#ff3b3b3a</color>
     <color name="accent">#ffe3b008</color>
 

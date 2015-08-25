@@ -1,11 +1,15 @@
 package com.cybercom.farzonelabs.cybercom20;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,13 +24,16 @@ public class AnimationClass {
      */
     public static Drawable PREV_BACKGROUND;
 
+
+    private int animationFinishedCount = 0;
+
     /**
      * The color iterator for the different fragments
      * @param sectionNumber - Which fragment number we are switching to
      * @param rootView - the rootView object.
      */
 
-    public static void switchColor(int sectionNumber, View rootView){
+    public static void switchSectionColor(int sectionNumber, View rootView){
         // Extract the color of the loading screen when loading is complete
         // If the animation has ended the variable is set, otherwise it's null.
         if(PREV_BACKGROUND != null){
@@ -41,6 +48,42 @@ public class AnimationClass {
             animateBackgroundStatusBarToolBar(rootView, MainActivity.mDrawerLayout, MainActivity.mToolbar, sectionColorFrom, sectionColorTo);
 
         }
+    }
+
+    public static void switchFABColor(View actionButtonView, int colorToId){
+
+        final FloatingActionButton fab = (FloatingActionButton) actionButtonView;
+        int fabColorFrom = getFabColorFrom(fab);
+        int fabColorTo = actionButtonView.getResources().getColor(colorToId);
+
+
+        ValueAnimator valueAnimator = ValueAnimator.ofArgb(fabColorFrom, fabColorTo);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                fab.setBackgroundColor((Integer) animation.getAnimatedValue());
+            }
+        });
+
+        valueAnimator.start();
+
+    }
+
+    private void startColorRotationAnimation(View animatedView, final int nrOfAnimations) {
+        final AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(animatedView.getContext(), R.animator.background_color_rotator);
+
+        set.setTarget(animatedView);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+                if (++animationFinishedCount == nrOfAnimations) { set.end(); }
+                set.start();
+            }
+        });
+        set.start();
+
     }
 
     private static void animateBackgroundStatusBarToolBar(View view, final DrawerLayout layout, final Toolbar toolbar, int colorFrom, int colorTo) {
@@ -85,6 +128,17 @@ public class AnimationClass {
         objAnimToolbar.start();
         valAnimStatusBar.start();
         */
+    }
+
+    private static int getFabColorFrom(FloatingActionButton fab){
+        int colorFrom = Color.TRANSPARENT;     //set a default color in case there was an error.
+        Drawable background = fab.getBackground();
+
+        if (background instanceof ColorDrawable) {
+            background.setAlpha(255);
+            colorFrom = ((ColorDrawable) background).getColor();
+        }
+        return colorFrom;
     }
 
     private static int getSectionColorFrom() {

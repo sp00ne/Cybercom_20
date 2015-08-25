@@ -70,7 +70,7 @@ public class SongbookCardFragment extends Fragment {
 
         //Init the color animation if there is one and assign the new PREV_BACKGROUND
         if(AnimationClass.PREV_BACKGROUND != null){
-            AnimationClass.switchColor(2,mRecyclerView);
+            AnimationClass.switchSectionColor(2, mRecyclerView);
         }
         AnimationClass.PREV_BACKGROUND = mRecyclerView.getBackground();
 
